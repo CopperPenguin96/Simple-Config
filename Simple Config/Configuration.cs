@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Mime;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace SimpleConfig
@@ -40,6 +37,17 @@ namespace SimpleConfig
 		{
 			Assembly assem = Assembly.GetExecutingAssembly();
 			return assem.GetName();
+		}
+
+		public ConfigProperty GetProperty(string name)
+		{
+			// Loops over each config item and then finds the correct one by name
+			foreach (var prop in Properties.Where(prop => string.Equals(prop.Name, name, StringComparison.CurrentCultureIgnoreCase)))
+			{
+				return prop;
+			}
+
+			throw new Exception("Config property does not exist");
 		}
 
 		/// <summary>
