@@ -39,7 +39,7 @@ Here is an example of how to use this tool. This example covers everything from 
     config.Properties.Add(firstName);
     config.Properties.Add(age);
     
-    // Save it, 1 of 3 ways
+    // Save it, 1 of 2 ways
     config.Save("config.json", Formatting.Indented); // For pretty json printing
     config.Save("config.json");
     
