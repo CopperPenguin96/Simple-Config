@@ -21,7 +21,7 @@ namespace SimpleConfig
 				{
 					_value = value;
 				}
-				catch (Exception e)
+				catch (Exception)
 				{
 					SetDefault();
 				}
@@ -150,6 +150,7 @@ namespace SimpleConfig
 		{
 			MinValue = min;
 		}
+
 	}
 
 	public class ConfigString : ConfigProperty<string>

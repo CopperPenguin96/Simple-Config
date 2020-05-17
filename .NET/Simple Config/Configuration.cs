@@ -21,9 +21,7 @@ namespace SimpleConfig
 				int minor = GetAssemName().Version.Minor;
 				int bui = GetAssemName().Version.Build;
 				int rev = GetAssemName().Version.Revision;
-				return Version.Parse(
-					$"{major}.{minor}.{bui}.{rev}"
-					);
+				return new Version(major, minor, rev, bui);
 			}
 		}
 
@@ -45,7 +43,9 @@ namespace SimpleConfig
 		public ConfigProperty GetProperty(string name)
 		{
 			// Loops over each config item and then finds the correct one by name
-			ConfigProperty property = GetProperty(name);
+			ConfigProperty property = Properties.Get("name");
+
+			// Return if it isn't null
 			if (property != null) return property;
 			
 			// Config property doesn't exist. Throw exception
