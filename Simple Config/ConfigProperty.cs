@@ -6,7 +6,37 @@ namespace SimpleConfig
 	/// Properties for the config.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class ConfigProperty<T>
+	public class ConfigProperty<T> : ConfigProperty
+	{
+		public new virtual T DefaultValue { get; set; }
+
+		private T _value;
+
+		public new virtual T Value
+		{
+			get => _value;
+			set
+			{
+				try
+				{
+					_value = value;
+				}
+				catch (Exception e)
+				{
+					SetDefault();
+				}
+			}
+		}
+
+		public ConfigProperty(string name, object defaultValue) : base(name, defaultValue)
+		{
+		}
+	}
+
+	/// <summary>
+	/// Basic object for the config. Use if you don't know the type. Very rare though.
+	/// </summary>
+	public class ConfigProperty
 	{
 		/// <summary>
 		/// The name of the property, how json identifies it
@@ -17,13 +47,13 @@ namespace SimpleConfig
 		/// The default value of the property.
 		/// If the server needs to reset a value, it uses this.
 		/// </summary>
-		public virtual T DefaultValue { get; set; }
+		public virtual object DefaultValue { get; set; }
 
-		private T _value;
+		private object _value;
 		/// <summary>
 		/// The value of the property.
 		/// </summary>
-		public virtual T Value
+		public virtual object Value
 		{
 			get => _value;
 			set
@@ -35,30 +65,17 @@ namespace SimpleConfig
 			}
 		}
 
-		public ConfigProperty(string name, T defaultValue)
+		public ConfigProperty(string name, object defaultValue)
 		{
-			if (name == null) throw new ArgumentNullException(nameof(name));
-			if (defaultValue == null) throw new ArgumentNullException(nameof(defaultValue));
-
-			Name = name;
-			DefaultValue = defaultValue;
+			Name = name ?? throw new ArgumentNullException(nameof(name));
+			DefaultValue = defaultValue ?? throw new ArgumentNullException(nameof(defaultValue));
 		}
 
 		public void SetDefault()
 		{
 			Value = DefaultValue;
 		}
-	}
 
-	/// <summary>
-	/// Basic object for the config. Use if you don't know the type. Very rare though.
-	/// Extends ConfigProperty - object
-	/// </summary>
-	public class ConfigProperty : ConfigProperty<object>
-	{
-		public ConfigProperty(string name, object defaultValue) : base(name, defaultValue)
-		{
-		}
 	}
 
 	public class ConfigInt : ConfigProperty<int>

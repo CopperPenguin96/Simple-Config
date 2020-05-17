@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 
@@ -39,21 +37,25 @@ namespace SimpleConfig
 			return assem.GetName();
 		}
 
+		/// <summary>
+		/// Gets the property specified.
+		/// </summary>
+		/// <param name="name">The name assigned to the property</param>
+		/// <returns>Returns the ConfigProperty object. Throws an exception if it doesn't exist.</returns>
 		public ConfigProperty GetProperty(string name)
 		{
 			// Loops over each config item and then finds the correct one by name
-			foreach (var prop in Properties.Where(prop => string.Equals(prop.Name, name, StringComparison.CurrentCultureIgnoreCase)))
-			{
-				return prop;
-			}
-
+			ConfigProperty property = GetProperty(name);
+			if (property != null) return property;
+			
+			// Config property doesn't exist. Throw exception
 			throw new Exception("Config property does not exist");
 		}
 
 		/// <summary>
 		/// List of properties added
 		/// </summary>
-		public List<ConfigProperty> Properties = new List<ConfigProperty>();
+		public PropertyList Properties = new PropertyList();
 
 		/// <summary>
 		/// Loads the default values of all properties
